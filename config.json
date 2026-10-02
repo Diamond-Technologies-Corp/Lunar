@@ -1,0 +1,10 @@
+{
+  "did_setup": true,
+  "location": {
+    "city": "ok",
+    "country": "us",
+    "latitude": "hey",
+    "longitude": "hoy",
+    "method": "UQT"
+  }
+}
