@@ -1,10 +1,10 @@
 {
-  "did_setup": true,
-  "location": {
-    "city": "ok",
-    "country": "us",
-    "latitude": "hey",
-    "longitude": "hoy",
-    "method": "UQT"
-  }
+    "did_setup": false,
+    "location": {
+        "city": "Lucerne",
+        "country": "Suisse",
+        "latitude": "",
+        "longitude": "",
+        "method": ""
+    }
 }

@@ -1,4 +1,25 @@
 # English: 
+
+Software for computers, aimed at obtaining prayer times and improving one’s daily life, becoming every day a better believer. This software is intended for Muslims; this software (like all our products) is focused on respecting data rights, and calculating prayer times is done locally (on your computer)., which also offers a lack of obligation to log in and thus total confidentiality. 
+
+> [NOTE]
+> Lunar is only available in English. 
+
+# Contact us! 
+
+If you have any questions, suggestions or need help, contact us by email: diamondtechnologies3@gmail.com
+
+# About us: 
+
+Diamond Technologies is a company based in Switzerland, developing tools/utility software, computer equipment and robots. We place values on compliance with data rights, free or paid, but no advertising is integrated into our software. We are so happy to work on this wonderful project and we assure you that you will love all our software. 
+
+Join our Discord server!
+
+# LLM (I.A Generative):
+
+Lunar uses an llm inference (Groq) to generate constant and regular reminders about Islam; a risk of error can occur, even if the zero risk does not exist (but it remains greatly rare). We use the free tier of the Groq API to maintain the service at no cost to you. Right, we make sure not to exceed the limit. To ensure the proper functioning of Lunar without Wi-Fi, if for 2 minutes the application is active, a generation of 10/5 reminders will be generated, stored on config.json (local). 
+
+
 # French: 
 
 Logiciel pour ordinateurs, visant à obtenir les horaires de prières et améliorer son quotidien, en devenant chaque jour, un meilleur croyant. Ce logiciel est destiné aux musulmans; ce logiciel (tout comme l'ensemble de nos produits) est axé sur le respect des droits des données, le calcul des horaires des prières se réalise en local (sur votre ordinateur), ce qui offre également une absence d'obligation de connexion et ainsi une confidentialité totale. 
