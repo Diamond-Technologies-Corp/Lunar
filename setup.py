@@ -4,6 +4,8 @@ from pathlib import Path
 
 import customtkinter as ctk
 
+from computation import METHODS, run_computation
+
 BASE_DIR = (
     Path(sys.executable).parent
     if getattr(sys, "frozen", False)
@@ -28,18 +30,23 @@ def save_config(data: dict) -> None:
         json.dump(data, file, indent=4, ensure_ascii=False)
 
 
+def clear_window() -> None:
+    for widget in root.winfo_children():
+        widget.destroy()
+
+
 ctk.set_appearance_mode("dark")
 
 root = ctk.CTk()
 root.title("Lunar - Setup | By Diamond Technologies")
-root.geometry("1080x720")
-root.minsize(480, 360)
+root.geometry("1000x520")
+root.minsize(780, 460)
 root.grid_columnconfigure(0, weight=1)
 
 
-def method():
-    for widget in root.winfo_children():
-        widget.destroy()
+# ---------------------------------------------------------------- Étape 1
+def method() -> None:
+    clear_window()
 
     label_title = ctk.CTkLabel(
         root,
@@ -50,15 +57,8 @@ def method():
     )
     label_title.grid(row=0, column=0, padx=20, pady=(40, 10))
 
-    values = [
-        "Muslim World League (Fajr 18° / Isha 17°)",
-        "ISNA (15° / 15°)",
-        "Egyptian (19.5° / 17.5°)",
-        "Karachi (18° / 18°)",
-        "Umm al-Qura (18.5° / 90 min after Maghrib)",
-        "UOIF (12° / 12°)",
-        "Diyanet (18° / 17°)",
-    ]
+    # Source unique : les clés de METHODS (computation.py)
+    values = list(METHODS.keys())
 
     method_selector = ctk.CTkComboBox(
         root,
@@ -76,7 +76,7 @@ def method():
 
     def confirm_method() -> None:
         selected_method = method_selector.get()
-        if selected_method not in values:
+        if selected_method not in METHODS:
             method_feedback.configure(
                 text="Error: Please select a calculation method.",
                 text_color="red",
@@ -97,10 +97,11 @@ def method():
             )
             return
 
+        btn_method.configure(state="disabled")
         method_feedback.configure(text="Please wait...", text_color=GREEN)
-        root.after(2000, finish)
+        root.after(1000, coordinates)
 
-    btn_confirm = ctk.CTkButton(
+    btn_method = ctk.CTkButton(
         root,
         text="Confirm",
         fg_color=GREEN,
@@ -109,7 +110,7 @@ def method():
         cursor="hand2",
         command=confirm_method,
     )
-    btn_confirm.grid(row=3, column=0)
+    btn_method.grid(row=3, column=0)
 
     label_advices = ctk.CTkLabel(
         root,
@@ -119,7 +120,7 @@ def method():
             "Umm al-Qura: Saudi Arabia and the Gulf\n"
             "ISNA: North America\n"
             "Karachi: South Asia\n"
-            "Diyanet: Turkey"
+            "Egyptian: Africa and the Middle East\n"
         ),
         text_color="white",
         wraplength=700,
@@ -131,10 +132,9 @@ def method():
     label_version.grid(row=6, column=0)
 
 
-def finish():
-    # La boucle ne fait que détruire : tout le reste est en dehors.
-    for widget in root.winfo_children():
-        widget.destroy()
+# ---------------------------------------------------------------- Étape 2
+def coordinates() -> None:
+    clear_window()
 
     progressbar = ctk.CTkProgressBar(
         root,
@@ -148,7 +148,7 @@ def finish():
 
     label_info = ctk.CTkLabel(
         root,
-        text="Last ask: What are the coordinates of your city?",
+        text="What are the coordinates of your city?",
         text_color="white",
         font=("Open Sans", 20),
     )
@@ -174,6 +174,7 @@ def finish():
     feedback.grid(row=8, column=0, pady=(10, 0))
 
     def lg() -> None:
+        # 1. Validation
         try:
             lat_val = float(latitude_entry.get().strip().replace(",", "."))
             longitude_val = float(longitude_entry.get().strip().replace(",", "."))
@@ -188,12 +189,12 @@ def finish():
             )
             return
 
+        # 2. Sauvegarde de la localisation AVANT le calcul
         data = load_config()
         if not isinstance(data.get("location"), dict):
             data["location"] = {}
         data["location"]["latitude"] = lat_val
         data["location"]["longitude"] = longitude_val
-        data["did_setup"] = True
 
         try:
             save_config(data)
@@ -201,11 +202,36 @@ def finish():
             feedback.configure(text="Error: Could not save your settings.", text_color="red")
             return
 
-        feedback.configure(text="Perfect! Your location was saved successfully.", text_color=GREEN)
-        btn_confirm.configure(state="disabled")
+        # 3. Bouton désactivé + message d'attente
+        btn_coords.configure(state="disabled")
+        feedback.configure(text="Please wait...", text_color="white")
+        root.update()
+
+        # 4. Calcul des horaires (relit et réécrit config.json)
+        try:
+            run_computation()
+        except Exception as e:
+            feedback.configure(text=f"Error: {e}", text_color="red")
+            btn_coords.configure(state="normal")
+            return
+
+        # 5. Setup marqué terminé seulement si le calcul a réussi
+        try:
+            data = load_config()
+            data["did_setup"] = True
+            save_config(data)
+        except OSError:
+            feedback.configure(text="Error: Could not save your settings.", text_color="red")
+            btn_coords.configure(state="normal")
+            return
+
+        feedback.configure(
+            text="Perfect! Your location was saved successfully.",
+            text_color=GREEN,
+        )
         root.after(1500, root.destroy)
 
-    btn_confirm = ctk.CTkButton(
+    btn_coords = ctk.CTkButton(
         root,
         text="Confirm",
         fg_color=GREEN,
@@ -214,8 +240,27 @@ def finish():
         cursor="hand2",
         command=lg,
     )
-    btn_confirm.grid(row=9, column=0)
+    btn_coords.grid(row=9, column=0)
 
 
-method()
+# ---------------------------------------------------------------- Écran d'accueil
+label_title = ctk.CTkLabel(
+    root,
+    text="Welcome in Lunar!",
+    font=("Open Sans", 30),
+)
+label_title.grid(row=1)
+
+btn_start = ctk.CTkButton(
+    root,
+    text="Start",
+    fg_color=GREEN,
+    text_color="white",
+    corner_radius=5,
+    cursor="hand2",
+    command=method,
+    font=("Open Sans", 17),
+)
+btn_start.grid(row=3, column=0)
+
 root.mainloop()

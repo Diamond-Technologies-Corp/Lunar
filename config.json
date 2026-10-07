@@ -2,15 +2,15 @@
     "did_setup": true,
     "language-content-llm": "",
     "location": {
-        "latitude": 12.0001,
-        "longitude": 15.991,
-        "method": "Muslim World League (Fajr 18° / Isha 17°)"
+        "latitude": 48.8566,
+        "longitude": 2.3522,
+        "method": "UOIF (12° / 12°)"
     },
     "Prayer": {
-        "fajr": "",
-        "duhr": "",
-        "asr": "",
-        "maghrib": "",
-        "icha": ""
+        "fajr": "06:51",
+        "duhr": "13:38",
+        "asr": "16:40",
+        "maghrib": "19:17",
+        "icha": "20:25"
     }
 }
