@@ -1,10 +1,16 @@
 {
-    "did_setup": false,
+    "did_setup": true,
+    "language-content-llm": "",
     "location": {
-        "city": "Lucerne",
-        "country": "Suisse",
-        "latitude": "",
-        "longitude": "",
-        "method": ""
+        "latitude": 12.0001,
+        "longitude": 15.991,
+        "method": "Muslim World League (Fajr 18° / Isha 17°)"
+    },
+    "Prayer": {
+        "fajr": "",
+        "duhr": "",
+        "asr": "",
+        "maghrib": "",
+        "icha": ""
     }
 }
