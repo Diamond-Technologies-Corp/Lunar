@@ -3,6 +3,8 @@ import sys
 from pathlib import Path
 
 import customtkinter as ctk
+import subprocess
+import sys
 
 from computation import METHODS, run_computation
 
@@ -14,6 +16,13 @@ BASE_DIR = (
 CONFIG_PATH = BASE_DIR / "config.json"
 
 GREEN = "#23d34c"
+
+LANGUAGES = [
+    "English",
+    "French",
+    "Spanish",
+    "Italiano",
+]
 
 
 def load_config() -> dict:
@@ -44,7 +53,6 @@ root.minsize(780, 460)
 root.grid_columnconfigure(0, weight=1)
 
 
-# ---------------------------------------------------------------- Étape 1
 def method() -> None:
     clear_window()
 
@@ -103,7 +111,7 @@ def method() -> None:
 
     btn_method = ctk.CTkButton(
         root,
-        text="Confirm",
+        text="Confirma",
         fg_color=GREEN,
         text_color="white",
         corner_radius=5,
@@ -128,11 +136,11 @@ def method() -> None:
     )
     label_advices.grid(row=5, column=0, padx=20, pady=10, sticky="ew")
 
-    label_version = ctk.CTkLabel(root, text="Version: 1.1", text_color="white")
+    label_version = ctk.CTkLabel(root, text="Version: 1.2", text_color="white")
     label_version.grid(row=6, column=0)
 
 
-# ---------------------------------------------------------------- Étape 2
+
 def coordinates() -> None:
     clear_window()
 
@@ -173,8 +181,7 @@ def coordinates() -> None:
     feedback = ctk.CTkLabel(root, text="", text_color="white")
     feedback.grid(row=8, column=0, pady=(10, 0))
 
-    def lg() -> None:
-        # 1. Validation
+    def confirm_coordinates() -> None:
         try:
             lat_val = float(latitude_entry.get().strip().replace(",", "."))
             longitude_val = float(longitude_entry.get().strip().replace(",", "."))
@@ -189,7 +196,6 @@ def coordinates() -> None:
             )
             return
 
-        # 2. Sauvegarde de la localisation AVANT le calcul
         data = load_config()
         if not isinstance(data.get("location"), dict):
             data["location"] = {}
@@ -202,48 +208,103 @@ def coordinates() -> None:
             feedback.configure(text="Error: Could not save your settings.", text_color="red")
             return
 
-        # 3. Bouton désactivé + message d'attente
         btn_coords.configure(state="disabled")
-        feedback.configure(text="Please wait...", text_color="white")
-        root.update()
+        feedback.configure(text="Please wait...", text_color=GREEN)
 
-        # 4. Calcul des horaires (relit et réécrit config.json)
+        root.after(500, last)
+
+    btn_coords = ctk.CTkButton(
+        root,
+        text="Confirmo",
+        fg_color=GREEN,
+        text_color="white",
+        corner_radius=5,
+        cursor="hand2",
+        command=confirm_coordinates,
+    )
+    btn_coords.grid(row=9, column=0)
+
+
+def last() -> None:
+    clear_window()
+
+    label_title = ctk.CTkLabel(
+        root,
+        text="Pls Select ur language from the output of the AI (llm):",
+        font=("Open Sans", 30),
+    )
+    label_title.grid(row=0, column=0, padx=20, pady=(40, 10))
+
+    language_selector = ctk.CTkComboBox(
+        root,
+        values=LANGUAGES,
+        border_color="green",
+        width=300,
+        font=("Open Sans", 12),
+        state="readonly",
+    )
+    language_selector.grid(row=1, column=0, pady=(0, 10))
+    language_selector.set(LANGUAGES[0])
+
+    feedback = ctk.CTkLabel(root, text="", text_color="white")
+    feedback.grid(row=3, column=0, pady=(10, 0))
+
+    def confirm_language() -> None:
+        selected_language = language_selector.get()
+        if selected_language not in LANGUAGES:
+            feedback.configure(text="Error: Please select a language.", text_color="red")
+            return
+
+
+        data = load_config()
+        data["language-content-llm"] = selected_language
+
+        try:
+            save_config(data)
+        except OSError:
+            feedback.configure(text="Error: Could not save your settings.", text_color="red")
+            return
+
+        btn_language.configure(state="disabled")
+        feedback.configure(text="Please wait...", text_color="white")
+        root.update()  
+
         try:
             run_computation()
         except Exception as e:
             feedback.configure(text=f"Error: {e}", text_color="red")
-            btn_coords.configure(state="normal")
+            btn_language.configure(state="normal")
             return
 
-        # 5. Setup marqué terminé seulement si le calcul a réussi
         try:
             data = load_config()
             data["did_setup"] = True
             save_config(data)
         except OSError:
             feedback.configure(text="Error: Could not save your settings.", text_color="red")
-            btn_coords.configure(state="normal")
+            btn_language.configure(state="normal")
             return
 
         feedback.configure(
-            text="Perfect! Your location was saved successfully.",
+            text="Thanks you! Welcome in Lunar...",
             text_color=GREEN,
         )
-        root.after(1500, root.destroy)
+        root.after(1300, root.destroy)
+        subprocess.Popen([sys.executable, "root.py"])
 
-    btn_coords = ctk.CTkButton(
+    btn_language = ctk.CTkButton(
         root,
         text="Confirm",
         fg_color=GREEN,
         text_color="white",
         corner_radius=5,
         cursor="hand2",
-        command=lg,
+        command=confirm_language,
     )
-    btn_coords.grid(row=9, column=0)
+    btn_language.grid(row=2, column=0)
 
 
-# ---------------------------------------------------------------- Écran d'accueil
+
 label_title = ctk.CTkLabel(
     root,
     text="Welcome in Lunar!",
@@ -262,5 +323,6 @@ btn_start = ctk.CTkButton(
     font=("Open Sans", 17),
 )
 btn_start.grid(row=3, column=0)
+
 
 root.mainloop()
