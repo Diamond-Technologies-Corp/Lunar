@@ -1,16 +1,17 @@
 {
-    "did_setup": true,
-    "language-content-llm": "French",
     "location": {
-        "latitude": 48.8566,
-        "longitude": 2.3522,
-        "method": "UOIF (12° / 12°)"
+        "method": "UOIF (12° / 12°)",
+        "latitude": 13.123,
+        "longitude": 51.33
     },
+    "language-content-llm": "French",
     "Prayer": {
-        "fajr": "06:55",
-        "duhr": "13:38",
-        "asr": "16:35",
-        "maghrib": "19:11",
-        "icha": "20:19"
-    }
+        "fajr": "03:38",
+        "duhr": "10:22",
+        "asr": "13:42",
+        "maghrib": "16:19",
+        "icha": "17:05"
+    },
+    "did_setup": true,
+    "image-bg": "True"
 }

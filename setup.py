@@ -5,6 +5,8 @@ from pathlib import Path
 import customtkinter as ctk
 import subprocess
 import sys
+import threading
+import time
 
 from computation import METHODS, run_computation
 
@@ -65,7 +67,7 @@ def method() -> None:
     )
     label_title.grid(row=0, column=0, padx=20, pady=(40, 10))
 
-    # Source unique : les clés de METHODS (computation.py)
+   
     values = list(METHODS.keys())
 
     method_selector = ctk.CTkComboBox(
@@ -158,7 +160,7 @@ def coordinates() -> None:
         root,
         text="What are the coordinates of your city?",
         text_color="white",
-        font=("Open Sans", 20),
+        font=("Open Sans", 20, "bold"),
     )
     label_info.grid(row=2, column=0)
 
@@ -231,7 +233,7 @@ def last() -> None:
     label_title = ctk.CTkLabel(
         root,
         text="Pls Select ur language from the output of the AI (llm):",
-        font=("Open Sans", 30),
+        font=("Open Sans", 30, "bold"),
     )
     label_title.grid(row=0, column=0, padx=20, pady=(40, 10))
 
@@ -248,6 +250,55 @@ def last() -> None:
 
     feedback = ctk.CTkLabel(root, text="", text_color="white")
     feedback.grid(row=3, column=0, pady=(10, 0))
+
+    def finish():
+        clear_window()
+
+        label_title = ctk.CTkLabel(root, text="Would you like to authorize a call to an api (library) to randomly display image backgrounds? (this exposes your IP address)?", font=("Open Sans", 30), justify="center", wraplength=900)
+        label_title.grid(row=1, pady=(0, 15))
+
+        label_info = ctk.CTkLabel(root, text="Lunar will download a free, royalty-free photo from [//]. This requires an internet connection, and //  will be able to see your IP address. You can change this anytime in Settings.", font=("Open Sans", 17), wraplength=700)
+        label_info.grid(row=2)
+
+        responses = ctk.CTkSwitch(root, text="Enable", onvalue="True", offvalue="False")
+        responses.grid(row=3, pady=10)
+
+        def save_choice_img():
+            print("Oooh Shi")
+
+            try:
+                data = load_config()
+                data["image-bg"] = responses.get()
+                save_config(data)
+                
+                # Fonction pour attendre et lancer root.py en arrière-plan
+                def bye():
+                    time.sleep(5)  # Mets 20 si tu veux 20 secondes au lieu de 5
+                    subprocess.Popen([sys.executable, "root.py"])
+                    root.destroy()
+                    print("Bye")
+
+                
+                threading.Thread(target=bye, daemon=True).start()
+
+            except Exception as e:
+                label_error = ctk.CTkLabel(root, text="Error: The data could not be saved properly.", font=("Open Sans", 19))
+                label_error.grid(row=5)  # Corrigé à row=5 pour ne pas superposer avec le bouton
+
+        btn_confirm = ctk.CTkButton(
+            root,
+            text="Confirm",
+            fg_color=GREEN,
+            text_color="white",
+            corner_radius=5,
+            cursor="hand2",
+            command=save_choice_img,
+            font=("Open Sans", 20),
+            height=32
+        )
+        btn_confirm.grid(row=4, pady=12)
+
+
 
     def confirm_language() -> None:
         selected_language = language_selector.get()
@@ -289,8 +340,9 @@ def last() -> None:
             text="Thanks you! Welcome in Lunar...",
             text_color=GREEN,
         )
-        root.after(1300, root.destroy)
-        subprocess.Popen([sys.executable, "root.py"])
+        
+        finish()
+        
 
     btn_language = ctk.CTkButton(
         root,
@@ -308,9 +360,17 @@ def last() -> None:
 label_title = ctk.CTkLabel(
     root,
     text="Welcome in Lunar!",
-    font=("Open Sans", 30),
+    font=("Open Sans", 30, "bold"),
 )
-label_title.grid(row=1)
+label_title.grid(row=1, pady=100)
+label_info = ctk.CTkLabel(
+    root,
+    text="Your prayer times, always at hand. Lunar works privately and locally, with no account and no tracking.",
+    font=("Open Sans", 14),
+    cursor="hand2",
+)
+label_info.grid(row=4, pady=78)
+
 
 btn_start = ctk.CTkButton(
     root,
@@ -320,9 +380,12 @@ btn_start = ctk.CTkButton(
     corner_radius=5,
     cursor="hand2",
     command=method,
-    font=("Open Sans", 17),
+    font=("Open Sans", 20),
+    height=32
 )
 btn_start.grid(row=3, column=0)
+
+
 
 
 root.mainloop()
