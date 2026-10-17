@@ -9,11 +9,7 @@ import threading
 import time
 
 from computation import METHODS, run_computation
-
-
-
-
-
+from bg import disabled, fetch_img, check_responses_user, main
 
 
 BASE_DIR = (
@@ -59,6 +55,7 @@ root.title("Lunar - Setup | By Diamond Technologies")
 root.geometry("1000x520")
 root.minsize(780, 460)
 root.grid_columnconfigure(0, weight=1)
+root.iconbitmap("assets/img/Lunar-icon.ico")
 
 
 def method() -> None:
@@ -119,7 +116,7 @@ def method() -> None:
 
     btn_method = ctk.CTkButton(
         root,
-        text="Confirma",
+        text="Confirm",
         fg_color=GREEN,
         text_color="white",
         corner_radius=5,
@@ -223,7 +220,7 @@ def coordinates() -> None:
 
     btn_coords = ctk.CTkButton(
         root,
-        text="Confirmo",
+        text="Confirm",
         fg_color=GREEN,
         text_color="white",
         corner_radius=5,
@@ -276,10 +273,13 @@ def last() -> None:
                 data = load_config()
                 data["image-bg"] = responses.get()
                 save_config(data)
+                disabled()
+                fetch_img()
+                check_responses_user()
+                main()
                 
-                # Fonction pour attendre et lancer root.py en arrière-plan
                 def bye():
-                    time.sleep(5)  # Mets 20 si tu veux 20 secondes au lieu de 5
+                    time.sleep(5)  
                     subprocess.Popen([sys.executable, "root.py"])
                     root.destroy()
                     print("Bye")
@@ -289,7 +289,7 @@ def last() -> None:
 
             except Exception as e:
                 label_error = ctk.CTkLabel(root, text="Error: The data could not be saved properly.", font=("Open Sans", 19))
-                label_error.grid(row=5)  # Corrigé à row=5 pour ne pas superposer avec le bouton
+                label_error.grid(row=5) 
 
         btn_confirm = ctk.CTkButton(
             root,

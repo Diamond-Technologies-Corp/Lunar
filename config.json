@@ -1,18 +1,18 @@
 {
     "location": {
         "method": "UOIF (12° / 12°)",
-        "latitude": 48.856614,
-        "longitude": 2.352222
+        "latitude": 42.6986,
+        "longitude": 2.8956
     },
     "language-content-llm": "French",
     "version": "1.2",
     "Prayer": {
-        "fajr": "06:59",
-        "duhr": "13:37",
-        "asr": "16:30",
-        "maghrib": "19:05",
-        "icha": "20:13"
+        "fajr": "07:02",
+        "duhr": "13:34",
+        "asr": "16:33",
+        "maghrib": "19:03",
+        "icha": "20:04"
     },
     "did_setup": true,
-    "image-bg": false
+    "image-bg": "True"
 }
