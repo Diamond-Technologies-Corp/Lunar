@@ -1,3 +1,5 @@
+![img1](assets/img/Lunar-icon-radius.png)
+
 # Lunar: 
 
 Welcome in Lunar, software for computers, aimed at obtaining prayer times and improving one’s daily life, becoming every day a better believer. This software is intended for Muslims; this software (like all our products) is focused on respecting data rights, and calculating prayer times is done locally (on your computer)., which also offers a lack of obligation to log in and thus total confidentiality. 
