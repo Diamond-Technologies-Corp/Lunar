@@ -3,6 +3,8 @@ import os
 import subprocess
 import sys
 from pathlib import Path
+from root import build
+from setup import setup
 
 CONFIG_FILE = "config.json"
 
@@ -13,7 +15,7 @@ DEFAULT_CONFIG = {
         "longitude": 2.3522
     },
     "language-content-llm": "French",
-    "version": "1.2",
+    "version": "1.3",
     "Prayer": {
         "fajr": "07:05",
         "duhr": "13:36",
@@ -66,10 +68,9 @@ def main():
   is_setup_done = check_setup_status()
 
   if not is_setup_done:
-    subprocess.run([sys.executable, "setup.py"])
+    setup()
   else:
-    subprocess.run([sys.executable, "root.py"])
-
+        build()
 
 if __name__ == "__main__":
   main()

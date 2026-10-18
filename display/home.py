@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 
 import customtkinter as ctk
+from utils import resource_path
 
 
 class Hometab:
