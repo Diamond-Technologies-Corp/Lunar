@@ -23,7 +23,7 @@ def build():
     bg_label = ctk.CTkLabel(root, image=root.bg_image, text="")
     bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-    label_title = ctk.CTkLabel(root, text="Lunar 1.3", font=("Open Sans", 30))
+    label_title = ctk.CTkLabel(root, text="Lunar 1.4", font=("Open Sans", 30))
     label_title.grid(row=1, column=0, pady=20)
 
 

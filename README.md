@@ -21,6 +21,15 @@ Join our [Discord server](https://discord.gg/nX5Cm899Kq)!
 
 Lunar uses an llm inference (Groq) to generate constant and regular reminders about Islam; a risk of error can occur, even if the zero risk does not exist (but it remains greatly rare). We use the free tier of the Groq API to maintain the service at no cost to you. Right, we make sure not to exceed the limit. To ensure the proper functioning of Lunar without Wi-Fi, if for 2 minutes the application is active, a generation of 10/5 reminders will be generated, stored on config.json (local). 
 
+# Install: 
+
+Go to the "Release" section, download the `LunarSetup.exe` file of the latest version.
+
+
+
+
+
+
 
 # French: 
 
@@ -61,7 +70,6 @@ Le résultat de la sortie de llm peut être incorrect, pour cela, nous vous cons
 
 Aucune données de l'utilisateur n'est envoyées à une llm, un prompt générique est demandé à l'utilisateur.
 
-# Installation!
+# Installation
 
-En construction... 
-
+Rend-toi sur la section "Release", télécharge le fichier `LunarSetup.exe` depuis la dernière version.
