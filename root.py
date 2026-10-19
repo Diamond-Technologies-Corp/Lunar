@@ -2,6 +2,7 @@ import customtkinter as ctk
 from update import apply_update, check_for_updates, launch
 from PIL import Image
 from display.home import Hometab
+from display.settings import Settab
 from utils import resource_path
 
 
@@ -34,6 +35,7 @@ def build():
     tab_set = tabview.add("Settings")
 
     Hometab(tab_home)
+    Settab(tab_set)
 
 
 
