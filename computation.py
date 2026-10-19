@@ -1,11 +1,10 @@
 import json
 from datetime import date, datetime
-from pathlib import Path
 
 from adhanpy.PrayerTimes import PrayerTimes
 from adhanpy.calculation import CalculationMethod
 
-CONFIG_PATH = Path(__file__).parent / "config.json"
+from utils import get_config_path
 
 METHODS = {
     "Muslim World League (Fajr 18° / Isha 17°)": CalculationMethod.MUSLIM_WORLD_LEAGUE,
@@ -18,12 +17,12 @@ METHODS = {
 
 
 def load_config() -> dict:
-    with open(CONFIG_PATH, "r", encoding="utf-8") as f:
+    with open(get_config_path(), "r", encoding="utf-8") as f:
         return json.load(f)
 
 
 def save_config(config: dict) -> None:
-    with open(CONFIG_PATH, "w", encoding="utf-8") as f:
+    with open(get_config_path(), "w", encoding="utf-8") as f:
         json.dump(config, f, indent=4, ensure_ascii=False)
 
 

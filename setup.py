@@ -1,25 +1,15 @@
 import json
-import sys
-from pathlib import Path
 
 import customtkinter as ctk
-import subprocess
-import sys
-import threading
-import time
-from utils import resource_path
+from utils import resource_path, get_config_path
 
 from computation import METHODS, run_computation
 from bg import disabled, fetch_img, check_responses_user, main
 
+
 def setup():
 
-    BASE_DIR = (
-        Path(sys.executable).parent
-        if getattr(sys, "frozen", False)
-        else Path(__file__).resolve().parent
-    )
-    CONFIG_PATH = BASE_DIR / "config.json"
+    CONFIG_PATH = get_config_path()
 
     GREEN = "#23d34c"
 
@@ -72,7 +62,7 @@ def setup():
         )
         label_title.grid(row=0, column=0, padx=20, pady=(40, 10))
 
-    
+
         values = list(METHODS.keys())
 
         method_selector = ctk.CTkComboBox(
@@ -143,7 +133,7 @@ def setup():
         )
         label_advices.grid(row=5, column=0, padx=20, pady=10, sticky="ew")
 
-        label_version = ctk.CTkLabel(root, text="Version: 1.2", text_color="white")
+        label_version = ctk.CTkLabel(root, text="Version: 1.3", text_color="white")
         label_version.grid(row=6, column=0)
 
 
@@ -279,19 +269,13 @@ def setup():
                     fetch_img()
                     check_responses_user()
                     main()
-                    
-                    def bye():
-                        time.sleep(5)  
-                        subprocess.Popen([sys.executable, "root.py"])
-                        root.destroy()
-                        print("Bye")
 
-                    
-                    threading.Thread(target=bye, daemon=True).start()
+
+                    root.after(5000, root.destroy)
 
                 except Exception as e:
                     label_error = ctk.CTkLabel(root, text="Error: The data could not be saved properly.", font=("Open Sans", 19))
-                    label_error.grid(row=5) 
+                    label_error.grid(row=5)
 
             btn_confirm = ctk.CTkButton(
                 root,
@@ -326,7 +310,7 @@ def setup():
 
             btn_language.configure(state="disabled")
             feedback.configure(text="Please wait...", text_color="white")
-            root.update()  
+            root.update()
 
             try:
                 run_computation()
@@ -348,9 +332,9 @@ def setup():
                 text="Thanks you! Welcome in Lunar...",
                 text_color=GREEN,
             )
-            
+
             finish()
-            
+
 
         btn_language = ctk.CTkButton(
             root,
