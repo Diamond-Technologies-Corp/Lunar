@@ -107,7 +107,7 @@ class Settab:
 
         label = ctk.CTkLabel(
             pop_up, 
-            text="Lunar v1.4\nDeveloped by Diamond Technologies.", 
+            text="Lunar v1.5\nDeveloped by Diamond Technologies.", 
             font=("Open Sans", 16, "bold")
         )
         label.pack(pady=30)

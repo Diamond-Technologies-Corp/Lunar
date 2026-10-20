@@ -133,7 +133,7 @@ def setup():
         )
         label_advices.grid(row=5, column=0, padx=20, pady=10, sticky="ew")
 
-        label_version = ctk.CTkLabel(root, text="Version: 1.3", text_color="white")
+        label_version = ctk.CTkLabel(root, text="Version: 1.5", text_color="white")
         label_version.grid(row=6, column=0)
 
 

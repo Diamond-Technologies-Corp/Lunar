@@ -43,7 +43,7 @@ def build():
 
     badge_version = ctk.CTkLabel(
         header_frame,
-        text="v1.4",
+        text="v1.5",
         font=("Open Sans", 11, "bold"),
         fg_color="#00C4EE",
         text_color="#121212",
